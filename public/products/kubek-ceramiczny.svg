@@ -1,0 +1,9 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" fill="#F2F2EE"/>
+  <rect x="52" y="56" width="78" height="104" rx="12" fill="none" stroke="#1A1A1A" stroke-width="6"/>
+<path d="M130,78 Q168,78 168,108 Q168,138 130,138" fill="none" stroke="#1A1A1A" stroke-width="6" stroke-linecap="round"/>
+<path d="M68,40 Q72,30 68,20" fill="none" stroke="#1A1A1A" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
+<path d="M90,40 Q94,30 90,20" fill="none" stroke="#1A1A1A" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
+  <text x="100" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" letter-spacing="1"
+    fill="#1A1A1A" opacity="0.55">KW POZNAŃ</text>
+</svg>
