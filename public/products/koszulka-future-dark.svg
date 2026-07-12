@@ -1,0 +1,7 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" fill="#402235"/>
+  <path d="M60,42 L82,30 Q100,46 118,30 L140,42 L157,68 L136,80 L136,162 L64,162 L64,80 L43,68 Z"
+  fill="none" stroke="#EDE3E8" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+  <text x="100" y="188" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" letter-spacing="1"
+    fill="#EDE3E8" opacity="0.55">KW POZNAŃ</text>
+</svg>

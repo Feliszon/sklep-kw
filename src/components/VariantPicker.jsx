@@ -38,7 +38,7 @@ export default function VariantPicker({ product }) {
       name: product.name,
       variantLabel: [variant.color, variant.size].filter(Boolean).join(" / "),
       price: variant.price,
-      image: product.image,
+      image: product.images?.[0] || "",
       qty,
       maxStock: variant.stock,
     });
@@ -60,7 +60,7 @@ export default function VariantPicker({ product }) {
                 className={`rounded-full border px-4 py-1.5 text-sm font-medium transition-all ${
                   selectedColor === color
                     ? "border-black bg-black text-white"
-                    : "border-neutral-300 text-neutral-700 hover:border-black"
+                    : "border-neutral-300 bg-white text-neutral-700 hover:border-black"
                 }`}
               >
                 {color}
@@ -87,8 +87,8 @@ export default function VariantPicker({ product }) {
                   selectedSize === v.size
                     ? "border-black bg-black text-white"
                     : v.stock === 0
-                    ? "cursor-not-allowed border-neutral-200 text-neutral-300 line-through"
-                    : "border-neutral-300 text-neutral-700 hover:border-black"
+                    ? "cursor-not-allowed border-neutral-200 bg-white text-neutral-300 line-through"
+                    : "border-neutral-300 bg-white text-neutral-700 hover:border-black"
                 }`}
               >
                 {v.size}
@@ -98,13 +98,13 @@ export default function VariantPicker({ product }) {
         </div>
       )}
 
-      <div className="flex items-center gap-3">
-        <span className="font-[family-name:var(--font-display)] text-3xl font-semibold text-black">
+      <div className="flex items-center gap-3 border-t border-neutral-200 pt-5">
+        <span className="font-[family-name:var(--font-mono)] text-3xl font-semibold text-black">
           {variant ? `${variant.price} zł` : "—"}
         </span>
         <span
-          className={`text-sm ${
-            variant && variant.stock > 0 ? "text-emerald-700" : "text-red-600"
+          className={`font-[family-name:var(--font-mono)] text-xs uppercase tracking-wide ${
+            variant && variant.stock > 0 ? "text-[#5c7a2e]" : "text-red-600"
           }`}
         >
           {variant
@@ -124,7 +124,7 @@ export default function VariantPicker({ product }) {
             id="qty"
             value={qty}
             onChange={(e) => setQty(Number(e.target.value))}
-            className="rounded-md border border-neutral-300 px-2 py-1.5 text-sm"
+            className="rounded-md border border-neutral-300 bg-white px-2 py-1.5 text-sm"
           >
             {Array.from({ length: Math.min(variant.stock, 10) }, (_, i) => i + 1).map((n) => (
               <option key={n} value={n}>
@@ -139,9 +139,26 @@ export default function VariantPicker({ product }) {
         type="button"
         onClick={handleAdd}
         disabled={!variant || variant.stock === 0}
-        className="rounded-md bg-[#8DC63F] px-6 py-3.5 text-sm font-semibold uppercase tracking-wide text-white transition-all hover:bg-[#7ab332] hover:shadow-md active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:shadow-none"
+        className={`group/btn relative flex items-center justify-center gap-2 overflow-hidden rounded-md px-6 py-3.5 text-sm font-semibold uppercase tracking-wide text-white transition-all duration-300 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:shadow-none ${
+          added ? "bg-black" : "bg-[#8DC63F] hover:bg-[#7ab332]"
+        }`}
+        style={
+          !added && variant && variant.stock > 0
+            ? { boxShadow: "0 10px 25px -8px rgba(141,198,63,0.45)" }
+            : undefined
+        }
       >
-        {added ? "Dodano do koszyka ✓" : "Dodaj do koszyka"}
+        {added ? (
+          <>
+            <span className="inline-block animate-[fadeInUp_0.3s_ease-out]">✓</span>
+            Dodano do koszyka
+          </>
+        ) : (
+          <>
+            Dodaj do koszyka
+            <span className="transition-transform group-hover/btn:translate-x-1">→</span>
+          </>
+        )}
       </button>
     </div>
   );

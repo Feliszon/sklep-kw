@@ -1,41 +1,51 @@
 import ProductCard from "@/components/ProductCard";
-import { getCategories, products } from "@/data/products";
+import HeroSpotlight from "@/components/HeroSpotlight";
+import RevealOnScroll from "@/components/RevealOnScroll";
+import { getCategories, getAllProducts } from "@/lib/shop-store";
+
+export const dynamic = "force-dynamic";
 
 export default function SklepPage() {
   const categories = getCategories();
+  const products = getAllProducts();
 
   return (
     <main>
       {/* Hero */}
-      <div className="relative overflow-hidden border-b border-neutral-200 bg-black">
+      <div className="relative overflow-hidden border-b border-neutral-800 bg-[#14140F]">
         <svg
-          className="pointer-events-none absolute inset-0 h-full w-full opacity-20"
-          viewBox="0 0 1000 300"
+          className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.18]"
+          viewBox="0 0 1000 320"
           preserveAspectRatio="none"
         >
-          <path d="M0 220 Q 150 140 300 220 T 600 220 T 1000 220" stroke="#8DC63F" strokeWidth="1.5" fill="none" />
-          <path d="M0 250 Q 150 180 300 250 T 600 250 T 1000 250" stroke="white" strokeWidth="1" fill="none" />
-          <path d="M0 190 Q 150 90 300 190 T 600 190 T 1000 190" stroke="white" strokeWidth="1" fill="none" />
-          <path d="M0 270 Q 150 220 300 270 T 600 270 T 1000 270" stroke="white" strokeWidth="1" fill="none" />
+          <path d="M0 240 Q 150 150 300 240 T 600 240 T 1000 240" stroke="#8DC63F" strokeWidth="1.5" fill="none" />
+          <path d="M0 270 Q 150 200 300 270 T 600 270 T 1000 270" stroke="white" strokeWidth="1" fill="none" />
+          <path d="M0 205 Q 150 95 300 205 T 600 205 T 1000 205" stroke="white" strokeWidth="1" fill="none" />
+          <path d="M0 290 Q 150 245 300 290 T 600 290 T 1000 290" stroke="white" strokeWidth="1" fill="none" />
+          <path d="M0 165 Q 150 40 300 165 T 600 165 T 1000 165" stroke="white" strokeWidth="0.75" fill="none" />
         </svg>
-        <div className="relative mx-auto max-w-6xl px-4 py-16 sm:py-20">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-[#8DC63F]">
+        <HeroSpotlight />
+        <div className="fade-in relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
+          <p className="mb-4 font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.35em] text-[#8DC63F]">
             Klub Wysokogórski Poznań
           </p>
-          <h1 className="font-[family-name:var(--font-display)] text-4xl font-semibold uppercase tracking-wide text-white sm:text-5xl">
-            Sklep klubowy
+          <h1 className="font-[family-name:var(--font-display)] text-5xl font-semibold uppercase leading-[0.95] tracking-wide text-white sm:text-6xl">
+            Sklep
+            <br />
+            klubowy
           </h1>
-          <p className="mt-3 max-w-md text-neutral-300">
+          <p className="mt-5 max-w-md text-neutral-400">
             Koszulki, torby i akcesoria z logo klubu — dla tych, którzy czują się
             najlepiej na szlaku i na ściance.
           </p>
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl px-4 py-12">
-        {categories.map((category) => (
-          <section key={category} className="mb-14">
-            <div className="mb-5 flex items-baseline gap-3">
+      <div className="mx-auto max-w-6xl px-4 py-16">
+        {categories.map((category, i) => (
+          <RevealOnScroll key={category} className={i > 0 ? "mt-16" : ""}>
+            <div className="mb-6 flex items-baseline gap-4">
+              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: "#8DC63F" }} />
               <h2 className="font-[family-name:var(--font-display)] text-xl font-semibold uppercase tracking-wide text-black">
                 {category}
               </h2>
@@ -44,11 +54,17 @@ export default function SklepPage() {
             <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
               {products
                 .filter((p) => p.category === category)
-                .map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                .map((product, j) => (
+                  <div
+                    key={product.id}
+                    className="fade-in"
+                    style={{ animationDelay: `${j * 60}ms` }}
+                  >
+                    <ProductCard product={product} />
+                  </div>
                 ))}
             </div>
-          </section>
+          </RevealOnScroll>
         ))}
       </div>
     </main>

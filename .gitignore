@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# dane sklepu (traktowane jak baza danych, nie kod)
+/data/shop.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

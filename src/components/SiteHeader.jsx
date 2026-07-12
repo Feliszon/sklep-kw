@@ -33,7 +33,7 @@ export default function SiteHeader() {
   const { totalItems } = useCart();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-neutral-200/80 bg-[#EDEDED]/90 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-neutral-200/80 bg-[#EDEDE8]/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
         <Link href="/sklep" className="flex items-center gap-3">
           <Image
@@ -44,7 +44,7 @@ export default function SiteHeader() {
             className="rounded-full ring-1 ring-black/5"
           />
           <span className="flex flex-col leading-none">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-neutral-500">
+            <span className="font-[family-name:var(--font-mono)] text-[10px] uppercase tracking-[0.25em] text-neutral-500">
               Klub Wysokogórski
             </span>
             <span className="font-[family-name:var(--font-display)] text-lg font-semibold uppercase tracking-wide text-black">
@@ -57,11 +57,11 @@ export default function SiteHeader() {
           <NavLink href="/sklep">Sklep</NavLink>
           <Link
             href="/koszyk"
-            className="group flex items-center gap-2 rounded-full border border-neutral-300 bg-white px-4 py-1.5 text-sm font-semibold uppercase tracking-wide text-black transition hover:border-black"
+            className="group flex items-center gap-2 rounded-full border border-neutral-300 bg-white px-4 py-1.5 text-sm font-semibold uppercase tracking-wide text-black transition-all hover:border-black hover:shadow-sm"
           >
             Koszyk
             <span
-              className="flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-xs font-bold text-white transition-transform group-hover:scale-110"
+              className="flex h-5 min-w-5 items-center justify-center rounded-full px-1 font-[family-name:var(--font-mono)] text-xs font-bold text-white transition-transform group-hover:scale-110"
               style={{ backgroundColor: KW_GREEN }}
             >
               {totalItems}
