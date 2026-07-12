@@ -160,16 +160,20 @@ function migrateLegacyImages(store) {
 }
 
 function readStore() {
-  if (!fs.existsSync(DATA_FILE)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-    fs.writeFileSync(DATA_FILE, JSON.stringify(SEED, null, 2), "utf-8");
+  try {
+    if (!fs.existsSync(DATA_FILE)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+      fs.writeFileSync(DATA_FILE, JSON.stringify(SEED, null, 2), "utf-8");
+      return structuredClone(SEED);
+    }
+    const store = JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
+    if (migrateLegacyImages(store)) {
+      writeStore(store);
+    }
+    return store;
+  } catch (err) {
     return structuredClone(SEED);
   }
-  const store = JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
-  if (migrateLegacyImages(store)) {
-    writeStore(store);
-  }
-  return store;
 }
 
 function writeStore(store) {
