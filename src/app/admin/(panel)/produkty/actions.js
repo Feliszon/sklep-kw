@@ -82,7 +82,18 @@ export async function saveProduct(prevState, formData) {
   redirect("/admin/produkty");
 }
 
-export async function deleteProductAction(id) {
-  deleteProduct(id);
+export async function deleteProductAction(prevState, formData) {
+  const id = formData.get("id");
+
+  if (!id) {
+    return { error: "Brakuje ID produktu." };
+  }
+
+  try {
+    deleteProduct(id);
+  } catch (err) {
+    return { error: err.message || "Nie udało się usunąć produktu." };
+  }
+
   redirect("/admin/produkty");
 }

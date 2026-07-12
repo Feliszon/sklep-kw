@@ -36,8 +36,8 @@ yarn-error.log*
 # vercel
 .vercel
 
-# dane sklepu (traktowane jak baza danych, nie kod)
-/data/shop.json
+# dane sklepu - teraz commitujemy aby zsynchronizowac z Vercel
+# /data/shop.json
 
 # typescript
 *.tsbuildinfo

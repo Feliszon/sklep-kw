@@ -1,0 +1,65 @@
+{
+  "categories": [
+    "Koszulki",
+    "Piny",
+    "Plakaty",
+    "Torby"
+  ],
+  "products": [
+    {
+      "id": "przypinka-jubileuszowa",
+      "name": "Przypinka Jubileuszowa",
+      "category": "Piny",
+      "description": "",
+      "images": [
+        "/uploads/przypinka-jubileuszowa-1783882195317-0.png",
+        "/uploads/przypinka-jubileuszowa-1783882577857-0.PNG"
+      ],
+      "variants": [
+        {
+          "id": "wariant",
+          "color": "",
+          "size": "",
+          "price": 20,
+          "stock": 10
+        }
+      ]
+    },
+    {
+      "id": "plakat-75",
+      "name": "Plakat 75",
+      "category": "Plakaty",
+      "description": "",
+      "images": [
+        "/uploads/plakat-75-1783882615102-0.jpeg"
+      ],
+      "variants": [
+        {
+          "id": "wariant",
+          "color": "",
+          "size": "",
+          "price": 10,
+          "stock": 20
+        }
+      ]
+    },
+    {
+      "id": "torba",
+      "name": "Torba",
+      "category": "Torby",
+      "description": "",
+      "images": [
+        "/uploads/torba-1783882691842-0.png"
+      ],
+      "variants": [
+        {
+          "id": "wariant",
+          "color": "",
+          "size": "",
+          "price": 49,
+          "stock": 5
+        }
+      ]
+    }
+  ]
+}
