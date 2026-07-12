@@ -4,132 +4,39 @@ import path from "path";
 const DATA_DIR = path.join(process.cwd(), "data");
 const DATA_FILE = path.join(DATA_DIR, "shop.json");
 
-// Seed startowy — dzisiejszy katalog sklepu, żeby nic nie zniknęło przy
-// pierwszym uruchomieniu panelu admina (zanim powstanie data/shop.json).
+// Seed domyślny — produkty dostępne zawsze (zwłaszcza na Vercel z read-only FS).
 const SEED = {
-  categories: ["Koszulki", "Torby", "Kubki"],
+  categories: ["Piny", "Plakaty", "Torby"],
   products: [
     {
-      id: "koszulka-oversize-urban",
-      name: "Koszulka Oversize Urban",
-      category: "Koszulki",
-      description:
-        "Luźny krój oversize z krótkim rękawem, boczne szwy, kołnierzyk prążkowany 1x1. " +
-        "100% bawełna stabilizowana, 200 g/m². Model unisex (JHK Urban Oversize).",
-      images: ["/products/koszulka-navy.svg"],
+      id: "przypinka-jubileuszowa",
+      name: "Przypinka Jubileuszowa",
+      category: "Piny",
+      description: "",
+      images: ["/uploads/przypinka-jubileuszowa-1783882195317-0.png", "/uploads/przypinka-jubileuszowa-1783882577857-0.PNG"],
       variants: [
-        { id: "navy-xs", color: "Navy", size: "XS", price: 89, stock: 0 },
-        { id: "navy-s", color: "Navy", size: "S", price: 89, stock: 0 },
-        { id: "navy-m", color: "Navy", size: "M", price: 89, stock: 0 },
-        { id: "navy-l", color: "Navy", size: "L", price: 89, stock: 0 },
-        { id: "navy-xl", color: "Navy", size: "XL", price: 89, stock: 0 },
-        { id: "navy-xxl", color: "Navy", size: "XXL", price: 89, stock: 1 },
-        { id: "mocha-xs", color: "Mocha Mousse", size: "XS", price: 89, stock: 0 },
-        { id: "mocha-s", color: "Mocha Mousse", size: "S", price: 89, stock: 0 },
-        { id: "mocha-m", color: "Mocha Mousse", size: "M", price: 89, stock: 0 },
-        { id: "mocha-l", color: "Mocha Mousse", size: "L", price: 89, stock: 2 },
-        { id: "mocha-xl", color: "Mocha Mousse", size: "XL", price: 89, stock: 2 },
-        { id: "mocha-xxl", color: "Mocha Mousse", size: "XXL", price: 89, stock: 0 },
-        { id: "future-dark-xs", color: "Future Dark", size: "XS", price: 89, stock: 0 },
-        { id: "future-dark-s", color: "Future Dark", size: "S", price: 89, stock: 0 },
-        { id: "future-dark-m", color: "Future Dark", size: "M", price: 89, stock: 0 },
-        { id: "future-dark-l", color: "Future Dark", size: "L", price: 89, stock: 2 },
-        { id: "future-dark-xl", color: "Future Dark", size: "XL", price: 89, stock: 1 },
-        { id: "future-dark-xxl", color: "Future Dark", size: "XXL", price: 89, stock: 0 },
+        { id: "wariant", color: "", size: "", price: 20, stock: 10 },
       ],
     },
     {
-      id: "koszulka-malfini-damska",
-      name: "Koszulka Malfini Basic (damska)",
-      category: "Koszulki",
-      description:
-        "Dopasowany, damski krój klasycznej koszulki klubowej. Model Malfini Basic 134.",
-      images: ["/products/koszulka-zielen.svg"],
+      id: "plakat-75",
+      name: "Plakat 75",
+      category: "Plakaty",
+      description: "",
+      images: ["/uploads/plakat-75-1783882615102-0.jpeg"],
       variants: [
-        { id: "zielen-xs", color: "Zieleń", size: "XS", price: 69, stock: 4 },
-        { id: "zielen-s", color: "Zieleń", size: "S", price: 69, stock: 4 },
-        { id: "zielen-m", color: "Zieleń", size: "M", price: 69, stock: 3 },
-        { id: "zielen-l", color: "Zieleń", size: "L", price: 69, stock: 0 },
-        { id: "roz-xs", color: "Róż", size: "XS", price: 69, stock: 4 },
-        { id: "roz-s", color: "Róż", size: "S", price: 69, stock: 3 },
-        { id: "roz-m", color: "Róż", size: "M", price: 69, stock: 1 },
-        { id: "roz-l", color: "Róż", size: "L", price: 69, stock: 0 },
-        { id: "szary-xs", color: "Szary", size: "XS", price: 69, stock: 5 },
-        { id: "szary-s", color: "Szary", size: "S", price: 69, stock: 3 },
-        { id: "szary-m", color: "Szary", size: "M", price: 69, stock: 2 },
-        { id: "szary-l", color: "Szary", size: "L", price: 69, stock: 0 },
-        { id: "niebieski-xs-d", color: "Niebieski", size: "XS", price: 69, stock: 5 },
-        { id: "niebieski-s-d", color: "Niebieski", size: "S", price: 69, stock: 5 },
-        { id: "niebieski-m-d", color: "Niebieski", size: "M", price: 69, stock: 1 },
-        { id: "niebieski-l-d", color: "Niebieski", size: "L", price: 69, stock: 0 },
-        { id: "military-xs-d", color: "Military", size: "XS", price: 69, stock: 5 },
-        { id: "military-s-d", color: "Military", size: "S", price: 69, stock: 4 },
-        { id: "military-m-d", color: "Military", size: "M", price: 69, stock: 2 },
-        { id: "military-l-d", color: "Military", size: "L", price: 69, stock: 0 },
+        { id: "wariant", color: "", size: "", price: 10, stock: 20 },
       ],
     },
     {
-      id: "koszulka-malfini-unisex",
-      name: "Koszulka Malfini Basic (męska/unisex)",
-      category: "Koszulki",
-      description:
-        "Klasyczny, prosty krój unisex. Ten sam model co wersja damska, w kroju męskim. Model Malfini Basic.",
-      images: ["/products/koszulka-niebieski.svg"],
-      variants: [
-        { id: "niebieski-xs-u", color: "Niebieski", size: "XS", price: 69, stock: 2 },
-        { id: "niebieski-s-u", color: "Niebieski", size: "S", price: 69, stock: 1 },
-        { id: "niebieski-m-u", color: "Niebieski", size: "M", price: 69, stock: 0 },
-        { id: "niebieski-l-u", color: "Niebieski", size: "L", price: 69, stock: 0 },
-        { id: "niebieski-xl-u", color: "Niebieski", size: "XL", price: 69, stock: 2 },
-        { id: "niebieski-xxl-u", color: "Niebieski", size: "XXL", price: 69, stock: 1 },
-        { id: "military-xs-u", color: "Military", size: "XS", price: 69, stock: 3 },
-        { id: "military-s-u", color: "Military", size: "S", price: 69, stock: 3 },
-        { id: "military-m-u", color: "Military", size: "M", price: 69, stock: 0 },
-        { id: "military-l-u", color: "Military", size: "L", price: 69, stock: 0 },
-        { id: "military-xl-u", color: "Military", size: "XL", price: 69, stock: 3 },
-        { id: "military-xxl-u", color: "Military", size: "XXL", price: 69, stock: 1 },
-      ],
-    },
-    {
-      id: "koszulka-stary-wzor",
-      name: "Koszulka klubowa — stary wzór",
-      category: "Koszulki",
-      description:
-        "Ostatnie sztuki starszego wzoru koszulki klubowej (damska), dopóki starczy zapasów.",
-      images: ["/products/koszulka-stara.svg"],
-      variants: [{ id: "stara-s", color: "Damska", size: "S", price: 49, stock: 7 }],
-    },
-    {
-      id: "torba-sportowa",
-      name: "Torba sportowa KW",
+      id: "torba",
+      name: "Torba",
       category: "Torby",
-      description: "Pojemna torba na sprzęt wspinaczkowy, wodoodporny spód.",
-      images: ["/products/torba-sportowa.svg"],
-      variants: [{ id: "standard", color: "Czarna", size: "One size", price: 89, stock: 12 }],
-    },
-    {
-      id: "worek-workout",
-      name: "Worek na magnezję",
-      category: "Torby",
-      description: "Mały worek ze sznurkiem, z logo klubu.",
-      images: ["/products/worek-workout.svg"],
-      variants: [{ id: "standard", color: "Beżowy", size: "One size", price: 19, stock: 20 }],
-    },
-    {
-      id: "kubek-ceramiczny",
-      name: "Kubek ceramiczny KW Poznań",
-      category: "Kubki",
-      description: "Pojemność 350 ml, logo klubu z dwóch stron.",
-      images: ["/products/kubek-ceramiczny.svg"],
-      variants: [{ id: "standard", color: "Biały", size: "350 ml", price: 29, stock: 15 }],
-    },
-    {
-      id: "kubek-termiczny",
-      name: "Kubek termiczny na szlak",
-      category: "Kubki",
-      description: "Stalowy, izolowany kubek 450 ml — trzyma ciepło na wyjściach w góry.",
-      images: ["/products/kubek-termiczny.svg"],
-      variants: [{ id: "standard", color: "Zielony", size: "450 ml", price: 59, stock: 0 }],
+      description: "",
+      images: ["/uploads/torba-1783882691842-0.png"],
+      variants: [
+        { id: "wariant", color: "", size: "", price: 49, stock: 5 },
+      ],
     },
   ],
 };
@@ -160,6 +67,12 @@ function migrateLegacyImages(store) {
 }
 
 function readStore() {
+  const isVercel = !!process.env.VERCEL;
+
+  if (isVercel) {
+    return structuredClone(SEED);
+  }
+
   try {
     if (!fs.existsSync(DATA_FILE)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -177,6 +90,10 @@ function readStore() {
 }
 
 function writeStore(store) {
+  if (process.env.VERCEL) {
+    throw new Error("Admin panel na Vercel jest read-only. Edytuj produkty lokalnie i push'nij do GitHub.");
+  }
+
   fs.mkdirSync(DATA_DIR, { recursive: true });
   const tmpFile = `${DATA_FILE}.tmp`;
   fs.writeFileSync(tmpFile, JSON.stringify(store, null, 2), "utf-8");
