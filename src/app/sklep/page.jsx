@@ -22,17 +22,6 @@ export default async function SklepPage({ searchParams }) {
     <main>
       {/* Hero */}
       <div className="relative overflow-hidden border-b border-neutral-800 bg-[#14140F]">
-        <svg
-          className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.18]"
-          viewBox="0 0 1000 320"
-          preserveAspectRatio="none"
-        >
-          <path d="M0 240 Q 150 150 300 240 T 600 240 T 1000 240" stroke="#8DC63F" strokeWidth="1.5" fill="none" />
-          <path d="M0 270 Q 150 200 300 270 T 600 270 T 1000 270" stroke="white" strokeWidth="1" fill="none" />
-          <path d="M0 205 Q 150 95 300 205 T 600 205 T 1000 205" stroke="white" strokeWidth="1" fill="none" />
-          <path d="M0 290 Q 150 245 300 290 T 600 290 T 1000 290" stroke="white" strokeWidth="1" fill="none" />
-          <path d="M0 165 Q 150 40 300 165 T 600 165 T 1000 165" stroke="white" strokeWidth="0.75" fill="none" />
-        </svg>
         <HeroSpotlight />
         <div className="fade-in relative mx-auto max-w-6xl px-4 py-20 sm:py-28">
           <p className="mb-4 font-[family-name:var(--font-mono)] text-xs uppercase tracking-[0.35em] text-[#8DC63F]">
