@@ -71,9 +71,9 @@ export async function saveProduct(prevState, formData) {
 
   try {
     if (id) {
-      updateProduct(id, { name, category, description, images, variants });
+      await updateProduct(id, { name, category, description, images, variants });
     } else {
-      createProduct({ name, category, description, images, variants });
+      await createProduct({ name, category, description, images, variants });
     }
   } catch (err) {
     return { error: err.message };
@@ -90,7 +90,7 @@ export async function deleteProductAction(prevState, formData) {
   }
 
   try {
-    deleteProduct(id);
+    await deleteProduct(id);
   } catch (err) {
     return { error: err.message || "Nie udało się usunąć produktu." };
   }

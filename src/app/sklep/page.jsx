@@ -5,9 +5,9 @@ import { getCategories, getAllProducts } from "@/lib/shop-store";
 
 export const dynamic = "force-dynamic";
 
-export default function SklepPage() {
-  const categories = getCategories();
-  const products = getAllProducts();
+export default async function SklepPage() {
+  const categories = await getCategories();
+  const products = await getAllProducts();
 
   return (
     <main>

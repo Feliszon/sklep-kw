@@ -1,10 +1,5 @@
-import fs from "fs";
-import path from "path";
+import { dbGet, dbSet } from "./firebase-db.js";
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const DATA_FILE = path.join(DATA_DIR, "shop.json");
-
-// Seed domyślny — produkty dostępne zawsze (zwłaszcza na Vercel z read-only FS).
 const SEED = {
   categories: ["Piny", "Plakaty", "Torby"],
   products: [
@@ -54,72 +49,41 @@ function slugify(text) {
     .replace(/^-+|-+$/g, "");
 }
 
-function migrateLegacyImages(store) {
-  let migrated = false;
-  for (const product of store.products) {
-    if (!Array.isArray(product.images)) {
-      product.images = product.image ? [product.image] : [];
-      delete product.image;
-      migrated = true;
-    }
-  }
-  return migrated;
-}
-
-function readStore() {
-  const isVercel = !!process.env.VERCEL;
-
-  if (isVercel) {
-    return structuredClone(SEED);
-  }
-
+async function getStore() {
   try {
-    if (!fs.existsSync(DATA_FILE)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
-      fs.writeFileSync(DATA_FILE, JSON.stringify(SEED, null, 2), "utf-8");
-      return structuredClone(SEED);
+    const data = await dbGet("data");
+    if (data) {
+      return data;
+    } else {
+      // Pierwszą próbę inicjalizujemy seed'em
+      await initializeStore();
+      return SEED;
     }
-    const store = JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
-    if (migrateLegacyImages(store)) {
-      writeStore(store);
-    }
-    return store;
   } catch (err) {
+    console.error("Błąd podczas czytania z Firebase:", err);
     return structuredClone(SEED);
   }
 }
 
-function writeStore(store) {
-  if (process.env.VERCEL) {
-    throw new Error("Admin panel na Vercel jest read-only. Edytuj produkty lokalnie i push'nij do GitHub.");
+async function initializeStore() {
+  try {
+    const existing = await dbGet("data");
+    if (!existing) {
+      await dbSet("data", SEED);
+    }
+  } catch (err) {
+    console.error("Błąd podczas inicjalizacji bazy danych:", err);
+    throw err;
   }
-
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-  const tmpFile = `${DATA_FILE}.tmp`;
-  fs.writeFileSync(tmpFile, JSON.stringify(store, null, 2), "utf-8");
-  fs.renameSync(tmpFile, DATA_FILE);
 }
 
-export function getAllProducts() {
-  return readStore().products;
-}
-
-export function getProductById(id) {
-  return readStore().products.find((p) => p.id === id);
-}
-
-export function getCategories() {
-  return readStore().categories;
-}
-
-function uniqueSlug(base, existingIds) {
-  let slug = base || "produkt";
-  let n = 2;
-  while (existingIds.has(slug)) {
-    slug = `${base}-${n}`;
-    n += 1;
+async function writeStore(store) {
+  try {
+    await dbSet("data", store);
+  } catch (err) {
+    console.error("Błąd podczas zapisu do Firebase:", err);
+    throw new Error(`Nie udało się zapisać zmian do bazy danych: ${err.message}`);
   }
-  return slug;
 }
 
 function normalizeVariants(rawVariants) {
@@ -155,14 +119,42 @@ function normalizeImages(images) {
   return images.filter((src) => typeof src === "string" && src.trim().length > 0);
 }
 
-export function createProduct({ name, category, description, images, variants }) {
+function uniqueSlug(base, existingIds) {
+  let slug = base || "produkt";
+  let n = 2;
+  while (existingIds.has(slug)) {
+    slug = `${base}-${n}`;
+    n += 1;
+  }
+  return slug;
+}
+
+export async function getAllProducts() {
+  const store = await getStore();
+  const products = store.products || [];
+  return Array.isArray(products) ? products : Object.values(products);
+}
+
+export async function getProductById(id) {
+  const store = await getStore();
+  const products = store.products || [];
+  const productArray = Array.isArray(products) ? products : Object.values(products);
+  return productArray.find((p) => p.id === id);
+}
+
+export async function getCategories() {
+  const store = await getStore();
+  return store.categories || [];
+}
+
+export async function createProduct({ name, category, description, images, variants }) {
   name = (name || "").trim();
   category = (category || "").trim();
   if (!name) throw new Error("Nazwa produktu jest wymagana.");
   if (!category) throw new Error("Kategoria jest wymagana.");
 
-  const store = readStore();
-  const existingIds = new Set(store.products.map((p) => p.id));
+  const store = await getStore();
+  const existingIds = new Set((store.products || []).map((p) => p.id));
   const id = uniqueSlug(slugify(name), existingIds);
 
   if (!store.categories.includes(category)) {
@@ -177,19 +169,24 @@ export function createProduct({ name, category, description, images, variants })
     images: normalizeImages(images),
     variants: normalizeVariants(variants),
   };
+
+  if (!Array.isArray(store.products)) {
+    store.products = [];
+  }
   store.products.push(product);
-  writeStore(store);
+  await writeStore(store);
   return product;
 }
 
-export function updateProduct(id, { name, category, description, images, variants }) {
+export async function updateProduct(id, { name, category, description, images, variants }) {
   name = (name || "").trim();
   category = (category || "").trim();
   if (!name) throw new Error("Nazwa produktu jest wymagana.");
   if (!category) throw new Error("Kategoria jest wymagana.");
 
-  const store = readStore();
-  const product = store.products.find((p) => p.id === id);
+  const store = await getStore();
+  const products = Array.isArray(store.products) ? store.products : Object.values(store.products || {});
+  const product = products.find((p) => p.id === id);
   if (!product) throw new Error("Nie znaleziono produktu.");
 
   if (!store.categories.includes(category)) {
@@ -202,58 +199,76 @@ export function updateProduct(id, { name, category, description, images, variant
   product.images = normalizeImages(images);
   product.variants = normalizeVariants(variants);
 
-  writeStore(store);
+  // Zaktualizuj produkty w store
+  if (Array.isArray(store.products)) {
+    store.products = store.products.map((p) => (p.id === id ? product : p));
+  } else {
+    store.products[id] = product;
+  }
+
+  await writeStore(store);
   return product;
 }
 
-export function deleteProduct(id) {
-  const store = readStore();
-  const before = store.products.length;
-  store.products = store.products.filter((p) => p.id !== id);
-  if (store.products.length === before) throw new Error("Nie znaleziono produktu.");
-  writeStore(store);
+export async function deleteProduct(id) {
+  const store = await getStore();
+  const before = (store.products || []).length;
+
+  if (Array.isArray(store.products)) {
+    store.products = store.products.filter((p) => p.id !== id);
+  } else {
+    delete store.products[id];
+  }
+
+  const after = Array.isArray(store.products) ? store.products.length : Object.keys(store.products).length;
+  if (after === before) throw new Error("Nie znaleziono produktu.");
+
+  await writeStore(store);
 }
 
-export function createCategory(name) {
+export async function createCategory(name) {
   name = (name || "").trim();
   if (!name) throw new Error("Nazwa kategorii jest wymagana.");
-  const store = readStore();
+  const store = await getStore();
   if (store.categories.includes(name)) throw new Error("Taka kategoria już istnieje.");
   store.categories.push(name);
-  writeStore(store);
+  await writeStore(store);
 }
 
-export function renameCategory(oldName, newName) {
+export async function renameCategory(oldName, newName) {
   newName = (newName || "").trim();
   if (!newName) throw new Error("Nazwa kategorii jest wymagana.");
-  const store = readStore();
+  const store = await getStore();
   if (!store.categories.includes(oldName)) throw new Error("Nie znaleziono kategorii.");
   if (oldName !== newName && store.categories.includes(newName)) {
     throw new Error("Taka kategoria już istnieje.");
   }
   store.categories = store.categories.map((c) => (c === oldName ? newName : c));
-  store.products.forEach((p) => {
+  const products = Array.isArray(store.products) ? store.products : Object.values(store.products || {});
+  products.forEach((p) => {
     if (p.category === oldName) p.category = newName;
   });
-  writeStore(store);
+  await writeStore(store);
 }
 
-export function deleteCategory(name) {
-  const store = readStore();
-  const inUse = store.products.some((p) => p.category === name);
+export async function deleteCategory(name) {
+  const store = await getStore();
+  const products = Array.isArray(store.products) ? store.products : Object.values(store.products || {});
+  const inUse = products.some((p) => p.category === name);
   if (inUse) {
     throw new Error("Nie można usunąć kategorii, która ma przypisane produkty.");
   }
   const before = store.categories.length;
   store.categories = store.categories.filter((c) => c !== name);
   if (store.categories.length === before) throw new Error("Nie znaleziono kategorii.");
-  writeStore(store);
+  await writeStore(store);
 }
 
-export function getCategoryUsage() {
-  const store = readStore();
+export async function getCategoryUsage() {
+  const store = await getStore();
+  const products = Array.isArray(store.products) ? store.products : Object.values(store.products || {});
   return store.categories.map((name) => ({
     name,
-    count: store.products.filter((p) => p.category === name).length,
+    count: products.filter((p) => p.category === name).length,
   }));
 }
