@@ -4,7 +4,6 @@ import { CartProvider } from "@/context/CartContext";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import GrainOverlay from "@/components/GrainOverlay";
-import ScrollProgress from "@/components/ScrollProgress";
 
 const oswald = Oswald({
   subsets: ["latin", "latin-ext"],
@@ -52,7 +51,6 @@ export default function RootLayout({ children }) {
           }
         `}</style>
         <GrainOverlay />
-        <ScrollProgress />
         <CartProvider>
           <SiteHeader />
           <div className="flex-1">{children}</div>
