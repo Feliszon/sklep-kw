@@ -3,9 +3,9 @@ import { getAllProducts, getCategories } from "@/lib/shop-store";
 
 const LOW_STOCK_THRESHOLD = 2;
 
-export default function AdminDashboardPage() {
-  const products = getAllProducts();
-  const categories = getCategories();
+export default async function AdminDashboardPage() {
+  const products = await getAllProducts();
+  const categories = await getCategories();
 
   const totalVariants = products.reduce((sum, p) => sum + p.variants.length, 0);
   const outOfStock = [];

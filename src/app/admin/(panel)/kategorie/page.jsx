@@ -2,8 +2,8 @@ import { getCategoryUsage } from "@/lib/shop-store";
 import AddCategoryForm from "./AddCategoryForm";
 import CategoryRow from "./CategoryRow";
 
-export default function AdminCategoriesPage() {
-  const categories = getCategoryUsage();
+export default async function AdminCategoriesPage() {
+  const categories = await getCategoryUsage();
 
   return (
     <div className="flex flex-col gap-6">

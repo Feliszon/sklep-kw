@@ -2,8 +2,8 @@ import Link from "next/link";
 import { getAllProducts } from "@/lib/shop-store";
 import DeleteButton from "./DeleteButton";
 
-export default function AdminProductsPage() {
-  const products = getAllProducts();
+export default async function AdminProductsPage() {
+  const products = await getAllProducts();
 
   return (
     <div className="flex flex-col gap-6">

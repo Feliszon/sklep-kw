@@ -10,7 +10,7 @@ import {
 export async function addCategoryAction(prevState, formData) {
   const name = formData.get("name");
   try {
-    createCategoryInStore(name);
+    await createCategoryInStore(name);
   } catch (err) {
     return { error: err.message };
   }
@@ -21,7 +21,7 @@ export async function addCategoryAction(prevState, formData) {
 export async function renameCategoryAction(oldName, prevState, formData) {
   const newName = formData.get("name");
   try {
-    renameCategoryInStore(oldName, newName);
+    await renameCategoryInStore(oldName, newName);
   } catch (err) {
     return { error: err.message };
   }
@@ -31,7 +31,7 @@ export async function renameCategoryAction(oldName, prevState, formData) {
 
 export async function deleteCategoryAction(name, prevState) {
   try {
-    deleteCategoryInStore(name);
+    await deleteCategoryInStore(name);
   } catch (err) {
     return { error: err.message };
   }

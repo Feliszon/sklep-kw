@@ -5,10 +5,10 @@ import { getProductById, getCategories } from "@/lib/shop-store";
 
 export default async function EditProductPage({ params }) {
   const { id } = await params;
-  const product = getProductById(id);
+  const product = await getProductById(id);
   if (!product) return notFound();
 
-  const categories = getCategories();
+  const categories = await getCategories();
 
   return (
     <div className="flex flex-col gap-6">

@@ -2,8 +2,8 @@ import Link from "next/link";
 import ProductForm from "@/components/admin/ProductForm";
 import { getCategories } from "@/lib/shop-store";
 
-export default function NewProductPage() {
-  const categories = getCategories();
+export default async function NewProductPage() {
+  const categories = await getCategories();
 
   return (
     <div className="flex flex-col gap-6">
