@@ -1,17 +1,11 @@
 import Link from "next/link";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { logout } from "../actions";
-import { isValidSessionToken, ADMIN_SESSION_COOKIE } from "@/lib/auth";
+import { requireAdmin } from "@/lib/admin-guard";
 
 const KW_GREEN = "#8DC63F";
 
 export default async function AdminPanelLayout({ children }) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
-  if (!isValidSessionToken(token)) {
-    redirect("/admin/login");
-  }
+  await requireAdmin();
 
   return (
     <div className="min-h-screen bg-[#F2F2ED]">

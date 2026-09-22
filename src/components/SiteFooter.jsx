@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import { SELLER } from "@/lib/seller";
 
 const KW_GREEN = "#8DC63F";
 
@@ -49,27 +51,35 @@ export default function SiteFooter() {
               Kontakt
             </h2>
             <div className="space-y-1 text-sm text-neutral-700">
-              <p className="font-semibold text-black">Klub Wysokogórski w Poznaniu</p>
-              <p>ul. Składowa 11/10</p>
-              <p>61-897 Poznań</p>
+              <p className="font-semibold text-black">{SELLER.name}</p>
+              <p>{SELLER.street}</p>
+              <p>{SELLER.postalCity}</p>
               <p>
                 e-mail:{" "}
-                <a href="mailto:klub@kw.poznan.pl" className="font-medium hover:underline" style={{ color: KW_GREEN }}>
-                  klub@kw.poznan.pl
+                <a href={`mailto:${SELLER.email}`} className="font-medium hover:underline" style={{ color: KW_GREEN }}>
+                  {SELLER.email}
                 </a>
               </p>
               <p>
                 Tel:{" "}
-                <a href="tel:+48602344311" className="font-medium hover:underline" style={{ color: KW_GREEN }}>
-                  +48 602 344 311
+                <a href={SELLER.phoneHref} className="font-medium hover:underline" style={{ color: KW_GREEN }}>
+                  {SELLER.phone}
                 </a>
               </p>
             </div>
             <div className="mt-4 space-y-0.5 font-[family-name:var(--font-mono)] text-xs text-neutral-500">
-              <p>NIP: 778-12-01-670</p>
-              <p>REGON: 001097823</p>
-              <p>KRS: 0000081650</p>
+              <p>NIP: {SELLER.nip}</p>
+              <p>REGON: {SELLER.regon}</p>
+              <p>KRS: {SELLER.krs}</p>
             </div>
+            <nav className="mt-5 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+              <Link href="/regulamin" className="font-medium text-black hover:underline">
+                Regulamin
+              </Link>
+              <Link href="/polityka-prywatnosci" className="font-medium text-black hover:underline">
+                Polityka prywatności
+              </Link>
+            </nav>
           </div>
 
           <Image
@@ -84,7 +94,7 @@ export default function SiteFooter() {
 
       {/* Dolny pasek - copyright + social media */}
       <div style={{ backgroundColor: KW_GREEN }}>
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4">
           <p className="text-sm text-black/80">
             © Copyright – Klub Wysokogórski Poznań – sklep online
           </p>

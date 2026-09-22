@@ -1,22 +1,22 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
 import { renameCategoryAction, deleteCategoryAction } from "./actions";
 
 export default function CategoryRow({ name, count }) {
   const [editing, setEditing] = useState(false);
   const [renameState, renameFormAction, renamePending] = useActionState(
-    renameCategoryAction.bind(null, name),
+    async (prevState, formData) => {
+      const result = await renameCategoryAction(name, prevState, formData);
+      if (result?.done) setEditing(false);
+      return result;
+    },
     null
   );
   const [deleteState, deleteFormAction, deletePending] = useActionState(
     deleteCategoryAction.bind(null, name),
     null
   );
-
-  useEffect(() => {
-    if (renameState?.done) setEditing(false);
-  }, [renameState]);
 
   return (
     <tr className="transition hover:bg-neutral-50">

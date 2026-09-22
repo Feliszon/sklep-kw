@@ -2,8 +2,19 @@
 
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+import CartSync from "@/components/CartSync";
 
 export default function KoszykPage() {
+  return (
+    <>
+      {/* Zawsze w tym samym miejscu drzewa - komunikat przetrwa opróżnienie koszyka */}
+      <CartSync className="max-w-3xl" />
+      <KoszykContent />
+    </>
+  );
+}
+
+function KoszykContent() {
   const { items, updateQty, removeItem, totalPrice } = useCart();
 
   if (items.length === 0) {

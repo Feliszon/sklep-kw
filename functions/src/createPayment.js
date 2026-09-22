@@ -62,7 +62,8 @@ module.exports = async function createPayment(req, res) {
       urlReturn: `${config.frontendUrl}/platnosc/status?session=${sessionId}`,
       urlStatus: config.webhookUrl,
       timeLimit: 15,
-      regulationAccept: true,
+      // false: P24 sam pokaże klientowi zgodę na swój regulamin - nie deklarujemy jej w jego imieniu.
+      regulationAccept: false,
       encoding: "UTF-8",
     });
 

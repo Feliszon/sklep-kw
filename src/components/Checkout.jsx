@@ -3,11 +3,21 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+import CartSync from "@/components/CartSync";
 import { createPayment, fetchPaymentMethods } from "@/lib/payments";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function Checkout() {
+  return (
+    <>
+      <CartSync className="max-w-2xl" />
+      <CheckoutContent />
+    </>
+  );
+}
+
+function CheckoutContent() {
   const { items, totalPrice, totalItems } = useCart();
 
   const [form, setForm] = useState({ name: "", email: "", phone: "" });
@@ -18,6 +28,7 @@ export default function Checkout() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [cashConfirmed, setCashConfirmed] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   useEffect(() => {
     if (totalPrice <= 0) return;
@@ -35,6 +46,7 @@ export default function Checkout() {
     if (!form.name.trim()) return "Podaj imię i nazwisko.";
     if (!EMAIL_RE.test(form.email.trim())) return "Podaj poprawny adres e-mail.";
     if (totalPrice <= 0) return "Koszyk jest pusty.";
+    if (!termsAccepted) return "Zaakceptuj regulamin i politykę prywatności.";
     return null;
   }
 
@@ -191,6 +203,27 @@ export default function Checkout() {
           )}
         </section>
 
+        <label className="flex items-start gap-3 text-sm text-neutral-700">
+          <input
+            type="checkbox"
+            checked={termsAccepted}
+            onChange={(e) => setTermsAccepted(e.target.checked)}
+            className="mt-0.5"
+            required
+          />
+          <span>
+            Akceptuję{" "}
+            <Link href="/regulamin" target="_blank" className="underline hover:text-black">
+              regulamin sklepu
+            </Link>{" "}
+            i zapoznałem/-am się z{" "}
+            <Link href="/polityka-prywatnosci" target="_blank" className="underline hover:text-black">
+              polityką prywatności
+            </Link>
+            .
+          </span>
+        </label>
+
         <div className="flex items-center justify-between border-t border-neutral-200 pt-6">
           <span className="text-lg font-semibold uppercase tracking-wide text-black">
             Razem <span className="font-[family-name:var(--font-mono)]">{totalPrice} zł</span>
@@ -200,7 +233,7 @@ export default function Checkout() {
             disabled={submitting}
             className="rounded-md bg-[#8DC63F] px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-[#7ab332] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {submitting ? "Przetwarzanie…" : selectedMethod === "cash" ? "Złóż zamówienie" : "Przejdź do płatności"}
+            {submitting ? "Przetwarzanie…" : selectedMethod === "cash" ? "Zamawiam z obowiązkiem zapłaty" : "Zamawiam i płacę"}
           </button>
         </div>
 
