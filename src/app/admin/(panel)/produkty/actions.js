@@ -4,6 +4,7 @@ import fs from "fs/promises";
 import path from "path";
 import { redirect } from "next/navigation";
 import { createProduct, updateProduct, deleteProduct } from "@/lib/shop-store";
+import { requireAdmin } from "@/lib/admin-guard";
 
 const UPLOADS_DIR = path.join(process.cwd(), "public", "uploads");
 
@@ -41,6 +42,8 @@ async function saveUploadedImages(files, nameHint) {
 }
 
 export async function saveProduct(prevState, formData) {
+  await requireAdmin();
+
   const id = formData.get("id");
   const name = formData.get("name");
   const category = formData.get("category");
@@ -83,6 +86,8 @@ export async function saveProduct(prevState, formData) {
 }
 
 export async function deleteProductAction(prevState, formData) {
+  await requireAdmin();
+
   const id = formData.get("id");
 
   if (!id) {

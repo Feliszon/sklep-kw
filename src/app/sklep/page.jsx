@@ -6,6 +6,10 @@ import { getCategories, getAllProducts } from "@/lib/shop-store";
 
 export const dynamic = "force-dynamic";
 
+export const metadata = {
+  alternates: { canonical: "/sklep" },
+};
+
 export default async function SklepPage({ searchParams }) {
   const categories = await getCategories();
   const products = await getAllProducts();
@@ -56,7 +60,7 @@ export default async function SklepPage({ searchParams }) {
         {query && (
           <div className="mb-8">
             <p className="text-sm text-neutral-600">
-              Wyniki wyszukiwania dla: <span className="font-semibold">"{query}"</span>
+              Wyniki wyszukiwania dla: <span className="font-semibold">„{query}”</span>
               {filteredProducts.length === 0 && <span> — nic nie znaleziono</span>}
               {filteredProducts.length > 0 && <span> — {filteredProducts.length} produktów</span>}
             </p>

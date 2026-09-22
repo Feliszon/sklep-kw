@@ -2,8 +2,19 @@
 
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+import CartSync from "@/components/CartSync";
 
 export default function KoszykPage() {
+  return (
+    <>
+      {/* Zawsze w tym samym miejscu drzewa - komunikat przetrwa opróżnienie koszyka */}
+      <CartSync className="max-w-3xl" />
+      <KoszykContent />
+    </>
+  );
+}
+
+function KoszykContent() {
   const { items, updateQty, removeItem, totalPrice } = useCart();
 
   if (items.length === 0) {
@@ -92,18 +103,13 @@ export default function KoszykPage() {
             {totalPrice} zł
           </span>
         </span>
-        <button
-          type="button"
-          disabled
-          title="Etap realizacji zamówienia dodamy w kolejnym kroku"
-          className="cursor-not-allowed rounded-md bg-neutral-300 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-neutral-600"
+        <Link
+          href="/kasa"
+          className="rounded-md bg-[#8DC63F] px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white transition-all hover:bg-[#7ab332] hover:shadow-lg hover:shadow-[#8DC63F]/20"
         >
           Przejdź do zamówienia
-        </button>
+        </Link>
       </div>
-      <p className="mt-3 text-right font-[family-name:var(--font-mono)] text-xs text-neutral-500">
-        Wybór odbioru/wysyłki i płatności dodamy w następnym kroku.
-      </p>
     </main>
   );
 }

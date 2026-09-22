@@ -6,8 +6,10 @@ import {
   renameCategory as renameCategoryInStore,
   deleteCategory as deleteCategoryInStore,
 } from "@/lib/shop-store";
+import { requireAdmin } from "@/lib/admin-guard";
 
 export async function addCategoryAction(prevState, formData) {
+  await requireAdmin();
   const name = formData.get("name");
   try {
     await createCategoryInStore(name);
@@ -19,6 +21,7 @@ export async function addCategoryAction(prevState, formData) {
 }
 
 export async function renameCategoryAction(oldName, prevState, formData) {
+  await requireAdmin();
   const newName = formData.get("name");
   try {
     await renameCategoryInStore(oldName, newName);
@@ -30,6 +33,7 @@ export async function renameCategoryAction(oldName, prevState, formData) {
 }
 
 export async function deleteCategoryAction(name, prevState) {
+  await requireAdmin();
   try {
     await deleteCategoryInStore(name);
   } catch (err) {
