@@ -6,6 +6,10 @@ import { getCategories, getAllProducts } from "@/lib/shop-store";
 
 export const dynamic = "force-dynamic";
 
+export const metadata = {
+  alternates: { canonical: "/sklep" },
+};
+
 export default async function SklepPage({ searchParams }) {
   const categories = await getCategories();
   const products = await getAllProducts();

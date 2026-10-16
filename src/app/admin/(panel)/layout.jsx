@@ -1,16 +1,11 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { logout } from "../actions";
-import { isAdmin } from "@/lib/auth";
+import { requireAdmin } from "@/lib/admin-guard";
 
 const KW_GREEN = "#8DC63F";
 
-export const metadata = { robots: { index: false, follow: false } };
-
 export default async function AdminPanelLayout({ children }) {
-  if (!(await isAdmin())) {
-    redirect("/admin/login");
-  }
+  await requireAdmin();
 
   return (
     <div className="min-h-screen bg-[#F2F2ED]">

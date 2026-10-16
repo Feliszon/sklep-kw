@@ -9,6 +9,9 @@ import { getDb } from "@/lib/firebase-db";
 const MAX_ATTEMPTS = 5;
 const WINDOW_MS = 15 * 60 * 1000;
 
+// Skróty o stałej długości - porównanie nie zdradza długości hasła.
+const sha256 = (s) => crypto.createHash("sha256").update(s).digest("hex");
+
 async function attemptsRef() {
   const h = await headers();
   const ip = (h.get("x-forwarded-for") || "").split(",")[0].trim() || "unknown";
@@ -28,7 +31,7 @@ export async function login(prevState, formData) {
   }
 
   const expected = process.env.ADMIN_PASSWORD;
-  if (!expected || typeof password !== "string" || !safeEqual(password, expected)) {
+  if (!expected || typeof password !== "string" || !safeEqual(sha256(password), sha256(expected))) {
     await ref.transaction((cur) =>
       !cur || now - cur.firstAt >= WINDOW_MS ? { count: 1, firstAt: now } : { ...cur, count: cur.count + 1 }
     );

@@ -1,8 +1,9 @@
 import Link from "next/link";
-import LegalPage, { SELLER } from "@/components/LegalPage";
+import LegalPage from "@/components/LegalPage";
+import { SELLER } from "@/lib/seller";
 import { SHIPPING_METHODS, formatPrice } from "@/lib/shipping";
 
-export const metadata = { title: "Regulamin - Sklep KW Poznań" };
+export const metadata = { title: "Regulamin", description: "Regulamin sklepu internetowego Klubu Wysokogórskiego w Poznaniu." };
 
 export default function RegulaminPage() {
   return (
@@ -10,13 +11,13 @@ export default function RegulaminPage() {
       <h2>§1. Postanowienia ogólne</h2>
       <ol>
         <li>
-          Sklep internetowy dostępny pod tym adresem (dalej: „Sklep”) prowadzi {SELLER.name}, {SELLER.address}, wpisany do
+          Sklep internetowy dostępny pod tym adresem (dalej: „Sklep”) prowadzi {SELLER.name}, {SELLER.street}, {SELLER.postalCity}, wpisany do
           Krajowego Rejestru Sądowego pod numerem KRS {SELLER.krs}, NIP {SELLER.nip}, REGON {SELLER.regon} (dalej:
           „Sprzedawca”).
         </li>
         <li>
           Kontakt ze Sprzedawcą: e-mail <a href={`mailto:${SELLER.email}`}>{SELLER.email}</a>, telefon {SELLER.phone}, adres
-          korespondencyjny: {SELLER.address}.
+          korespondencyjny: {SELLER.street}, {SELLER.postalCity}.
         </li>
         <li>Regulamin określa zasady składania zamówień, zawierania umów sprzedaży, dostawy, płatności, odstąpienia od umowy i reklamacji.</li>
         <li>
@@ -122,7 +123,7 @@ export default function RegulaminPage() {
         (formularz należy wypełnić i odesłać tylko w przypadku chęci odstąpienia od umowy)
         <br />
         <br />
-        Adresat: {SELLER.name}, {SELLER.address}, {SELLER.email}
+        Adresat: {SELLER.name}, {SELLER.street}, {SELLER.postalCity}, {SELLER.email}
         <br />
         <br />
         Ja/My(*) niniejszym informuję/informujemy(*) o moim/naszym odstąpieniu od umowy sprzedaży następujących rzeczy(*):

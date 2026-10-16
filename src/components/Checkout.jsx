@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
+import CartSync from "@/components/CartSync";
+import { getCurrentVariants } from "@/lib/cart-actions";
 import { placeOrder, fetchPaymentMethods } from "@/lib/payments";
 import { SHIPPING_METHODS, getShippingMethod, formatPrice } from "@/lib/shipping";
 
@@ -13,8 +15,17 @@ const OPTION =
   "mb-2 flex items-start gap-3 rounded-md border border-neutral-200 p-3 text-sm hover:border-neutral-300";
 
 export default function Checkout() {
+  return (
+    <>
+      <CartSync className="max-w-2xl" />
+      <CheckoutContent />
+    </>
+  );
+}
+
+function CheckoutContent() {
   const router = useRouter();
-  const { items, totalPrice, clearCart, syncPrices } = useCart();
+  const { items, totalPrice, clearCart, applyServerData } = useCart();
 
   const [form, setForm] = useState({
     name: "",
@@ -107,7 +118,12 @@ export default function Checkout() {
       clearCart();
       router.push(`/platnosc/status?order=${result.orderId}`);
     } catch (err) {
-      if (err.prices) syncPrices(err.prices);
+      if (err.prices) {
+        // Ceny zmieniły się po dodaniu do koszyka - pobierz aktualne i popraw koszyk.
+        getCurrentVariants(items.map((i) => `${i.productId}:${i.variantId}`))
+          .then(applyServerData)
+          .catch(() => {});
+      }
       setError(err.message);
       setSubmitting(false);
     }

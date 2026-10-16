@@ -2,6 +2,7 @@ import "server-only";
 import nodemailer from "nodemailer";
 import { formatPrice } from "./shipping.js";
 import { statusLabel } from "./order-status.js";
+import { SITE_URL } from "./site.js";
 
 // Wysyłka przez SMTP (np. skrzynka klubowa w domenie kw.poznan.pl).
 // Gdy SMTP nie jest skonfigurowane, maile są tylko logowane - zamówienie i tak przechodzi.
@@ -22,7 +23,7 @@ function getTransporter() {
 }
 
 function siteUrl() {
-  return (process.env.SITE_URL || "http://localhost:3000").replace(/\/$/, "");
+  return SITE_URL;
 }
 
 function escapeHtml(text) {

@@ -4,6 +4,7 @@ import { CartProvider } from "@/context/CartContext";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import GrainOverlay from "@/components/GrainOverlay";
+import { SITE_URL } from "@/lib/site";
 
 const oswald = Oswald({
   subsets: ["latin", "latin-ext"],
@@ -23,8 +24,18 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata = {
-  title: "Sklep KW Poznań",
-  description: "Sklep z gadżetami Klubu Wysokogórskiego Poznań",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Sklep KW Poznań",
+    template: "%s | Sklep KW Poznań",
+  },
+  description: "Koszulki, torby i akcesoria z logo Klubu Wysokogórskiego w Poznaniu.",
+  openGraph: {
+    type: "website",
+    locale: "pl_PL",
+    siteName: "Sklep KW Poznań",
+    images: ["/logo-kw.png"],
+  },
 };
 
 export default function RootLayout({ children }) {

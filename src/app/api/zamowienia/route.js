@@ -2,9 +2,10 @@ import { NextResponse } from "next/server";
 import { createOrder, OrderError, adminSetOrderStatus } from "@/lib/orders";
 import { registerTransaction, isP24Configured } from "@/lib/p24";
 import { sendOrderConfirmedEmails } from "@/lib/mailer";
+import { SITE_URL } from "@/lib/site";
 
 function siteUrl() {
-  return (process.env.SITE_URL || "http://localhost:3000").replace(/\/$/, "");
+  return SITE_URL;
 }
 
 export async function POST(request) {

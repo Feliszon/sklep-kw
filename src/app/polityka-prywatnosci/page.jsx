@@ -1,13 +1,14 @@
-import LegalPage, { SELLER } from "@/components/LegalPage";
+import LegalPage from "@/components/LegalPage";
+import { SELLER } from "@/lib/seller";
 
-export const metadata = { title: "Polityka prywatności - Sklep KW Poznań" };
+export const metadata = { title: "Polityka prywatności", description: "Zasady przetwarzania danych osobowych w sklepie Klubu Wysokogórskiego w Poznaniu." };
 
 export default function PolitykaPrywatnosciPage() {
   return (
     <LegalPage title="Polityka prywatności" updated="16 października 2026 r.">
       <h2>1. Administrator danych</h2>
       <p>
-        Administratorem Twoich danych osobowych jest {SELLER.name}, {SELLER.address}, KRS {SELLER.krs}, NIP {SELLER.nip}.
+        Administratorem Twoich danych osobowych jest {SELLER.name}, {SELLER.street}, {SELLER.postalCity}, KRS {SELLER.krs}, NIP {SELLER.nip}.
         Kontakt w sprawach danych osobowych: <a href={`mailto:${SELLER.email}`}>{SELLER.email}</a>.
       </p>
 

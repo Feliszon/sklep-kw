@@ -1,6 +1,13 @@
+import { LEGAL_DRAFT } from "@/lib/seller";
+
 export default function LegalPage({ title, updated, children }) {
   return (
     <main className="fade-in mx-auto max-w-3xl px-4 py-14">
+      {LEGAL_DRAFT && (
+        <p className="mb-8 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          Projekt dokumentu – wymaga weryfikacji i uzupełnienia przez Klub przed uruchomieniem sprzedaży.
+        </p>
+      )}
       <h1 className="font-[family-name:var(--font-display)] mb-2 text-3xl font-semibold uppercase tracking-wide text-black">
         {title}
       </h1>
@@ -13,13 +20,3 @@ export default function LegalPage({ title, updated, children }) {
     </main>
   );
 }
-
-export const SELLER = {
-  name: "Klub Wysokogórski w Poznaniu",
-  address: "ul. Składowa 11/10, 61-897 Poznań",
-  nip: "778-12-01-670",
-  regon: "001097823",
-  krs: "0000081650",
-  email: "klub@kw.poznan.pl",
-  phone: "+48 602 344 311",
-};

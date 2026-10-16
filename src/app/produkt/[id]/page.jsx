@@ -6,6 +6,29 @@ import { getProductById } from "@/lib/shop-store";
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const product = await getProductById(id);
+  if (!product) return { title: "Nie znaleziono produktu" };
+
+  const prices = (product.variants || []).map((v) => v.price);
+  const from = prices.length ? Math.min(...prices) : null;
+  const description =
+    product.description?.trim() ||
+    `${product.name} – ${product.category}${from !== null ? `, od ${from} zł` : ""}. Sklep Klubu Wysokogórskiego w Poznaniu.`;
+
+  return {
+    title: product.name,
+    description,
+    alternates: { canonical: `/produkt/${product.id}` },
+    openGraph: {
+      title: product.name,
+      description,
+      images: product.images?.length ? [product.images[0]] : ["/logo-kw.png"],
+    },
+  };
+}
+
 export default async function ProductPage({ params }) {
   const { id } = await params;
   const product = await getProductById(id);

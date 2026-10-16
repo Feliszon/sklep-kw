@@ -1,6 +1,7 @@
 import "server-only";
 import crypto from "crypto";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const SESSION_COOKIE = "kw_admin_session";
 const MAX_AGE_SECONDS = 60 * 60 * 12; // 12h
@@ -46,7 +47,7 @@ export async function isAdmin() {
 // MUSI wywołać tę funkcję, sam layout panelu niczego nie chroni.
 export async function requireAdmin() {
   if (!(await isAdmin())) {
-    throw new Error("Brak uprawnień - zaloguj się ponownie.");
+    redirect("/admin/login");
   }
 }
 
