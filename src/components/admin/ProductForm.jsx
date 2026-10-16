@@ -11,6 +11,30 @@ function emptyVariant() {
   return { key: crypto.randomUUID(), color: "", size: "", price: "", stock: "" };
 }
 
+const MAX_IMAGE_DIMENSION = 2000;
+
+// Zmniejsza zdjęcie w przeglądarce (WebP, max 2000 px), żeby zmieścić się w limicie
+// rozmiaru żądania na Vercelu (4,5 MB). Przy błędzie zwraca oryginał.
+async function shrinkImage(file) {
+  if (!file.type.startsWith("image/") || file.type === "image/gif") return file;
+  try {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, MAX_IMAGE_DIMENSION / Math.max(bitmap.width, bitmap.height));
+    if (scale === 1 && file.size <= 1024 * 1024) return file;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    canvas.getContext("2d").drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/webp", 0.85));
+    if (!blob || blob.type !== "image/webp" || blob.size >= file.size) return file;
+    return new File([blob], file.name.replace(/\.[^.]+$/, "") + ".webp", { type: "image/webp" });
+  } catch {
+    return file;
+  }
+}
+
 function emptyImageRow() {
   return { key: crypto.randomUUID(), previewUrl: "" };
 }
@@ -52,8 +76,18 @@ export default function ProductForm({ mode, product, categories }) {
     setNewImageRows((prev) => prev.filter((r) => r.key !== key));
   }
 
-  function handleNewImageChange(key, e) {
-    const file = e.target.files?.[0];
+  async function handleNewImageChange(key, e) {
+    const input = e.target;
+    let file = input.files?.[0];
+    if (file) {
+      const smaller = await shrinkImage(file);
+      if (smaller !== file) {
+        const dt = new DataTransfer();
+        dt.items.add(smaller);
+        input.files = dt.files;
+        file = smaller;
+      }
+    }
     setNewImageRows((prev) =>
       prev.map((r) => (r.key === key ? { ...r, previewUrl: file ? URL.createObjectURL(file) : "" } : r))
     );

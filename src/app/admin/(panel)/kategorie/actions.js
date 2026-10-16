@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { requireAdmin } from "@/lib/auth";
 import {
   createCategory as createCategoryInStore,
   renameCategory as renameCategoryInStore,
@@ -8,6 +9,7 @@ import {
 } from "@/lib/shop-store";
 
 export async function addCategoryAction(prevState, formData) {
+  await requireAdmin();
   const name = formData.get("name");
   try {
     await createCategoryInStore(name);
@@ -19,6 +21,7 @@ export async function addCategoryAction(prevState, formData) {
 }
 
 export async function renameCategoryAction(oldName, prevState, formData) {
+  await requireAdmin();
   const newName = formData.get("name");
   try {
     await renameCategoryInStore(oldName, newName);
@@ -30,6 +33,7 @@ export async function renameCategoryAction(oldName, prevState, formData) {
 }
 
 export async function deleteCategoryAction(name, prevState) {
+  await requireAdmin();
   try {
     await deleteCategoryInStore(name);
   } catch (err) {

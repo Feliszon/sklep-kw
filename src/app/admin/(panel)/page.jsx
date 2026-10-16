@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { getAllProducts, getCategories } from "@/lib/shop-store";
+import { listOrders } from "@/lib/orders";
 
 const LOW_STOCK_THRESHOLD = 2;
 
 export default async function AdminDashboardPage() {
-  const products = await getAllProducts();
-  const categories = await getCategories();
+  const [products, categories, orders] = await Promise.all([getAllProducts(), getCategories(), listOrders()]);
+  const ordersToHandle = orders.filter((o) => ["paid", "cash_pending", "payment_error"].includes(o.status)).length;
 
   const totalVariants = products.reduce((sum, p) => sum + p.variants.length, 0);
   const outOfStock = [];
@@ -31,7 +32,8 @@ export default async function AdminDashboardPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
+        <StatCard label="Zamówienia do realizacji" value={ordersToHandle} href="/admin/zamowienia" />
         <StatCard label="Produkty" value={products.length} href="/admin/produkty" />
         <StatCard label="Kategorie" value={categories.length} href="/admin/kategorie" />
         <StatCard label="Warianty" value={totalVariants} />

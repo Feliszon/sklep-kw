@@ -1,15 +1,14 @@
 import Link from "next/link";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { logout } from "../actions";
-import { isValidSessionToken, ADMIN_SESSION_COOKIE } from "@/lib/auth";
+import { isAdmin } from "@/lib/auth";
 
 const KW_GREEN = "#8DC63F";
 
+export const metadata = { robots: { index: false, follow: false } };
+
 export default async function AdminPanelLayout({ children }) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
-  if (!isValidSessionToken(token)) {
+  if (!(await isAdmin())) {
     redirect("/admin/login");
   }
 
@@ -27,6 +26,12 @@ export default async function AdminPanelLayout({ children }) {
                 className="text-sm font-semibold uppercase tracking-wide text-neutral-400 transition hover:text-white"
               >
                 Start
+              </Link>
+              <Link
+                href="/admin/zamowienia"
+                className="text-sm font-semibold uppercase tracking-wide text-neutral-400 transition hover:text-white"
+              >
+                Zamówienia
               </Link>
               <Link
                 href="/admin/produkty"

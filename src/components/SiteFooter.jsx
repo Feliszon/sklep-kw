@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const KW_GREEN = "#8DC63F";
 
@@ -85,9 +86,15 @@ export default function SiteFooter() {
       {/* Dolny pasek - copyright + social media */}
       <div style={{ backgroundColor: KW_GREEN }}>
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-          <p className="text-sm text-black/80">
-            © Copyright – Klub Wysokogórski Poznań – sklep online
-          </p>
+          <div className="flex flex-col gap-1 text-sm text-black/80 sm:flex-row sm:items-center sm:gap-5">
+            <p>© Copyright – Klub Wysokogórski Poznań – sklep online</p>
+            <Link href="/regulamin" className="font-medium hover:text-black hover:underline">
+              Regulamin
+            </Link>
+            <Link href="/polityka-prywatnosci" className="font-medium hover:text-black hover:underline">
+              Polityka prywatności
+            </Link>
+          </div>
           <div className="flex items-center gap-4 text-black/80">
             <a href="https://www.facebook.com/p/Klub-Wysokog%C3%B3rski-w-Poznaniu-100079341175294/?locale=pl_PL" aria-label="Facebook" className="transition hover:text-black">
               <FacebookIcon />

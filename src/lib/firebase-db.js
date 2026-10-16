@@ -1,51 +1,18 @@
-// Firebase Realtime Database REST API wrapper
-const DATABASE_URL = process.env.FIREBASE_DATABASE_URL;
+import "server-only";
+import { getDb } from "./firebase-admin.js";
 
-if (!DATABASE_URL) {
-  throw new Error("Brak FIREBASE_DATABASE_URL w zmiennych środowiskowych.");
-}
+// Dostęp do Realtime Database przez Admin SDK. Reguły bazy blokują cały
+// dostęp publiczny (patrz database.rules.json) - zapisywać i czytać może
+// wyłącznie serwer.
 
 async function dbGet(path) {
-  try {
-    const url = `${DATABASE_URL}/${path}.json`;
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Firebase GET error: ${response.status}`);
-    }
-
-    return await response.json();
-  } catch (err) {
-    console.error(`Firebase GET error at ${path}:`, err);
-    throw err;
-  }
+  const snapshot = await getDb().ref(path).get();
+  return snapshot.exists() ? snapshot.val() : null;
 }
 
 async function dbSet(path, data) {
-  try {
-    const url = `${DATABASE_URL}/${path}.json`;
-    const response = await fetch(url, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Firebase SET error: ${response.status}`);
-    }
-
-    return await response.json();
-  } catch (err) {
-    console.error(`Firebase SET error at ${path}:`, err);
-    throw err;
-  }
+  await getDb().ref(path).set(data);
+  return data;
 }
 
-export { dbGet, dbSet };
+export { dbGet, dbSet, getDb };

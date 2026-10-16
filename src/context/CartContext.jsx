@@ -56,6 +56,16 @@ export function CartProvider({ children }) {
     );
   }
 
+  // Aktualne ceny z serwera (gdy admin zmienił cenę po dodaniu produktu do koszyka).
+  function syncPrices(prices) {
+    setItems((prev) =>
+      prev.map((i) => {
+        const fresh = prices.find((p) => p.productId === i.productId && p.variantId === i.variantId);
+        return fresh ? { ...i, price: fresh.price } : i;
+      })
+    );
+  }
+
   function clearCart() {
     setItems([]);
   }
@@ -65,7 +75,7 @@ export function CartProvider({ children }) {
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, updateQty, removeItem, clearCart, totalItems, totalPrice }}
+      value={{ items, addItem, updateQty, removeItem, clearCart, syncPrices, totalItems, totalPrice }}
     >
       {children}
     </CartContext.Provider>
