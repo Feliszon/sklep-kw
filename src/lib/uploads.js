@@ -14,7 +14,7 @@ const ALLOWED_TYPES = {
 const MAX_FILE_BYTES = 4 * 1024 * 1024;
 
 /**
- * Zapisuje zdjęcia produktu. Na Vercelu (BLOB_READ_WRITE_TOKEN ustawiony) - do
+ * Zapisuje zdjęcia produktu. Na Vercelu (BLOB_STORE_ID przy połączeniu OIDC albo BLOB_READ_WRITE_TOKEN) - do
  * Vercel Blob, bo system plików serwera jest tylko do odczytu. Lokalnie - do public/uploads.
  * Zwraca listę publicznych URL-i.
  */
@@ -30,7 +30,7 @@ export async function saveProductImages(files, slugBase) {
     const filename = `${slugBase || "produkt"}-${Date.now()}-${crypto.randomBytes(3).toString("hex")}${ext}`;
     const buffer = Buffer.from(await file.arrayBuffer());
 
-    if (process.env.BLOB_READ_WRITE_TOKEN) {
+    if (process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID) {
       const blob = await put(`products/${filename}`, buffer, { access: "public", contentType: file.type });
       urls.push(blob.url);
     } else {

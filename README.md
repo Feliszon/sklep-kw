@@ -36,7 +36,8 @@ Katalog `functions/` (Firebase Functions) nie jest już używany, bo płatności
 
 ### 2. Vercel
 1. Zaimportuj repozytorium w Vercel.
-2. Storage → **Create Blob Store** → podłącz do projektu (ustawi `BLOB_READ_WRITE_TOKEN`).
+2. Storage → **Create Blob Store** (dostęp **Public**, region Frankfurt) → podłącz do projektu
+   (ustawi `BLOB_STORE_ID`, a w starszych projektach `BLOB_READ_WRITE_TOKEN`).
 3. Settings → Environment Variables: wszystkie zmienne z `.env.local.example`.
    - `SITE_URL` = docelowy adres https, np. `https://sklep.kw.poznan.pl`
    - `ADMIN_PASSWORD`: **nowe** hasło (stare było w historii repozytorium)
