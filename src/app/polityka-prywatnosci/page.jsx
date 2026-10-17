@@ -5,7 +5,7 @@ export const metadata = { title: "Polityka prywatności", description: "Zasady p
 
 export default function PolitykaPrywatnosciPage() {
   return (
-    <LegalPage title="Polityka prywatności" updated="16 października 2026 r.">
+    <LegalPage title="Polityka prywatności" updated="17 października 2026 r.">
       <h2>1. Administrator danych</h2>
       <p>
         Administratorem Twoich danych osobowych jest {SELLER.name}, {SELLER.street}, {SELLER.postalCity}, KRS {SELLER.krs}, NIP {SELLER.nip}.
@@ -26,7 +26,13 @@ export default function PolitykaPrywatnosciPage() {
           <strong>Dochodzenie roszczeń i obrona przed nimi</strong>. Podstawa: nasz prawnie uzasadniony interes (art. 6 ust. 1
           lit. f RODO).
         </li>
+        <li>
+          <strong>Bezpieczeństwo strony</strong> - serwer hostingowy zapisuje w logach techniczne dane połączeń (m.in. adres IP,
+          czas, rodzaj przeglądarki), które służą wykrywaniu błędów i nadużyć i są automatycznie usuwane. Podstawa: nasz prawnie
+          uzasadniony interes (art. 6 ust. 1 lit. f RODO).
+        </li>
       </ul>
+      <p>Nie podejmujemy wobec Ciebie decyzji w sposób zautomatyzowany i nie profilujemy Cię.</p>
       <p>Podanie danych jest dobrowolne, ale niezbędne do złożenia zamówienia.</p>
 
       <h2>3. Komu przekazujemy dane</h2>
@@ -50,7 +56,8 @@ export default function PolitykaPrywatnosciPage() {
       <h2>5. Twoje prawa</h2>
       <p>
         Masz prawo dostępu do swoich danych, ich sprostowania, usunięcia, ograniczenia przetwarzania, przenoszenia danych oraz
-        wniesienia sprzeciwu wobec przetwarzania opartego na prawnie uzasadnionym interesie. Masz też prawo wnieść skargę do
+        wniesienia sprzeciwu wobec przetwarzania opartego na prawnie uzasadnionym interesie. Aby skorzystać z tych praw, napisz na{" "}
+        <a href={`mailto:${SELLER.email}`}>{SELLER.email}</a>. Masz też prawo wnieść skargę do
         Prezesa Urzędu Ochrony Danych Osobowych (ul. Stawki 2, 00-193 Warszawa).
       </p>
 

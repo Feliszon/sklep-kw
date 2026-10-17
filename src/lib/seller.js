@@ -14,4 +14,4 @@ export const SELLER = {
 // Regulamin i polityka prywatności to projekty do weryfikacji przez klub
 // (najlepiej z prawnikiem). Po zatwierdzeniu treści ustaw na false -
 // zniknie baner "projekt" na obu stronach.
-export const LEGAL_DRAFT = true;
+export const LEGAL_DRAFT = false;
