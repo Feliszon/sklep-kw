@@ -4,7 +4,6 @@ import { safeEqual } from "./auth.js";
 
 /**
  * Klient REST API Przelewy24 (https://docs.przelewy24.pl/).
- * Przeniesiony z functions/src/p24Client.js - działa teraz w API routes Next.js.
  */
 
 const SANDBOX_BASE_URL = "https://sandbox.przelewy24.pl";

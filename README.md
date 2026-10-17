@@ -24,7 +24,7 @@ Cykl zamówienia: złożenie zamówienia od razu rezerwuje towar (stan maleje). 
 webhook P24. Zamówienie nieopłacone w ciągu 30 minut jest anulowane, a towar wraca na stan. Anulowanie
 w panelu też zwraca towar.
 
-Katalog `functions/` (Firebase Functions) nie jest już używany, bo płatności obsługują API routes Next.js.
+Test połączenia z kontem sandbox P24: `node --env-file=.env.local scripts/p24-sandbox-test.mjs`.
 
 ## Wdrożenie (checklista)
 

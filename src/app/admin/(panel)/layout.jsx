@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { logout } from "../actions";
-import { requireAdmin } from "@/lib/admin-guard";
+import { requireAdmin } from "@/lib/auth";
 
 const KW_GREEN = "#8DC63F";
 
